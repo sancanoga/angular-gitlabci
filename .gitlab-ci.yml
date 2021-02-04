@@ -3,7 +3,7 @@ image: node:12.18.3
 stages:
   - install
   - build
-  - nodejs-scan-sast
+  - test
   - deploy
 
 include:
