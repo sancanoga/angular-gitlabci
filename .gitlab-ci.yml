@@ -9,6 +9,7 @@ stages:
 include:
   - template: Security/SAST.gitlab-ci.yml
   - template: Container-Scanning.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
 
 install-dependencies:
   stage: install
@@ -35,6 +36,18 @@ build-app:
     expire_in: 1hr
     paths:
       - dist/
+
+build-container:
+  image: docker:19.03.12
+  stage: build
+  services:
+    - docker:19.03.12-dind
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG      
 
 pages:
   stage: deploy
