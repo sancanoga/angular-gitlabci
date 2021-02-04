@@ -8,7 +8,7 @@ stages:
   - dast
 
 include:
-  #- template: Security/SAST.gitlab-ci.yml -> 'takes too long time'
+  - template: Security/SAST.gitlab-ci.yml
   - template: Container-Scanning.gitlab-ci.yml
   - template: Dependency-Scanning.gitlab-ci.yml
   - template: DAST.gitlab-ci.yml 
@@ -38,7 +38,7 @@ build-app:
   script:
     - npm run build
   artifacts:
-    expire_in: 1hr
+    expire_in: 5hr
     paths:
       - dist/
 
