@@ -5,11 +5,16 @@ stages:
   - build
   - test
   - deploy
+  - dast
 
 include:
-  - template: Security/SAST.gitlab-ci.yml
+  #- template: Security/SAST.gitlab-ci.yml -> 'takes too long time'
   - template: Container-Scanning.gitlab-ci.yml
   - template: Dependency-Scanning.gitlab-ci.yml
+  - template: DAST.gitlab-ci.yml 
+
+variables: 
+    DAST_WEBSITE: https://devops-poc2.gitlab.io/angular-project/ 
 
 install-dependencies:
   stage: install
@@ -62,6 +67,6 @@ pages:
   environment:
     name: 'production'
   only:
-    - branches      
+    - branches         
 
 
